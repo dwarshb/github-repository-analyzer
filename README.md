@@ -20,8 +20,8 @@ A web application that analyzes GitHub repositories and generates comprehensive 
 
 1. Clone this repository:
    ```bash
-   git clone https://github.com/yourusername/github-repo-analyzer.git
-   cd github-repo-analyzer
+   git clone https://github.com/dwarshb/github-repository-analyzer.git
+   cd github-repository-analyzer
    ```
 
 2. Install dependencies:
