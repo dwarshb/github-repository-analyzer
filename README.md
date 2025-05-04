@@ -14,7 +14,11 @@ A web application that analyzes GitHub repositories and generates comprehensive 
 ## Screenshots
 
 ![Screenshot 2025-05-03 at 10 22 32 PM](https://github.com/user-attachments/assets/77da03f0-3b0a-4ec4-af1e-6f17473a7dd7)
-![Screenshot 2025-05-03 at 10 22 20 PM](https://github.com/user-attachments/assets/b455cc1c-7bab-420d-a552-30c1de2916b1)
+### Result Analysis
+| Overview | Structure | Code Analysis |
+|---|---|---|
+|![Screenshot 2025-05-04 at 2 06 29 AM](https://github.com/user-attachments/assets/500ffcc8-382c-4961-b960-8ef8f7a673f9) | ![Screenshot 2025-05-04 at 2 06 39 AM](https://github.com/user-attachments/assets/80584bfd-dfee-4225-9f20-97c39b6bcdc0)|![Screenshot 2025-05-04 at 2 06 58 AM](https://github.com/user-attachments/assets/21f7beb0-14a1-4b19-8cdf-e87b5888d9f7)|
+
 
 ## Installation
 
