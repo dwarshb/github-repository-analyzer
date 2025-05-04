@@ -13,8 +13,8 @@ A web application that analyzes GitHub repositories and generates comprehensive 
 
 ## Screenshots
 
-![Main Page](screenshots/main_page.png)
-![Results Page](screenshots/results_page.png)
+![Screenshot 2025-05-03 at 10 22 32 PM](https://github.com/user-attachments/assets/77da03f0-3b0a-4ec4-af1e-6f17473a7dd7)
+![Screenshot 2025-05-03 at 10 22 20 PM](https://github.com/user-attachments/assets/b455cc1c-7bab-420d-a552-30c1de2916b1)
 
 ## Installation
 
