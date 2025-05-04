@@ -335,7 +335,7 @@ class GitHubAPIAnalyzer:
             bool: True if the file should be analyzed
         """
         _, ext = os.path.splitext(filename.lower())
-        return ext in ['.py', '.js', '.java', '.cpp', '.c', '.go', '.rb', '.php', '.ts', '.jsx', '.tsx']
+        return ext in ['.py', '.js', '.java', '.cpp', '.c', '.go', '.rb', '.php', '.ts', '.jsx', '.tsx', '.kt', '.kts']
     
     def _analyze_file_content(self, file_info):
         """
@@ -366,6 +366,8 @@ class GitHubAPIAnalyzer:
                 self._extract_js_elements(content, path)
             elif ext in ['.java']:
                 self._extract_java_elements(content, path)
+            elif ext in ['.kt', '.kts']:
+                self._extract_kotlin_elements(content, path)
                 
         except Exception as e:
             print(f"Error analyzing file {file_info.get('path')}: {e}")
@@ -461,7 +463,54 @@ class GitHubAPIAnalyzer:
                 'params': params,
                 'language': 'Java'
             })
-    
+            
+    def _extract_kotlin_elements(self, content, file_path):
+        """Extract functions and classes from Kotlin code."""
+        # Find class definitions
+        class_matches = re.finditer(r'(?:open|abstract|sealed|final|)?\s*(?:class|interface|object)\s+([a-zA-Z0-9_]+)(?:\s*(?:<.*?>)?(?:\s*:\s*([a-zA-Z0-9_<>, ]+))?)?', content, re.MULTILINE)
+        for match in class_matches:
+            class_name = match.group(1)
+            inheritance = match.group(2) if match.group(2) else ""
+            
+            self.classes.append({
+                'name': class_name,
+                'file': file_path,
+                'inheritance': inheritance,
+                'language': 'Kotlin'
+            })
+            
+        # Find function definitions
+        func_matches = re.finditer(r'(?:private|public|internal|protected|)?\s*(?:suspend|inline|)?\s*fun\s+(?:<.*?>)?\s*(?:[a-zA-Z0-9_]+\.)?([a-zA-Z0-9_]+)\s*(?:<.*?>)?\s*\((.*?)\)(?:\s*:\s*[a-zA-Z0-9_<>., ]+)?', content, re.MULTILINE | re.DOTALL)
+        for match in func_matches:
+            func_name = match.group(1)
+            params = match.group(2)
+            
+            # Skip private functions if needed
+            if func_name.startswith('_') and not func_name.startswith('__'):
+                continue
+                
+            self.functions.append({
+                'name': func_name,
+                'file': file_path,
+                'params': params,
+                'language': 'Kotlin'
+            })
+            
+        # Find extension functions
+        extension_func_matches = re.finditer(r'(?:private|public|internal|protected|)?\s*(?:suspend|inline|)?\s*fun\s+([a-zA-Z0-9_<>., ]+)\.([a-zA-Z0-9_]+)\s*\((.*?)\)(?:\s*:\s*[a-zA-Z0-9_<>., ]+)?', content, re.MULTILINE | re.DOTALL)
+        for match in extension_func_matches:
+            receiver_type = match.group(1)
+            func_name = match.group(2)
+            params = match.group(3)
+            
+            self.functions.append({
+                'name': f"{receiver_type}.{func_name}",
+                'file': file_path,
+                'params': params,
+                'language': 'Kotlin (Extension)'
+            })
+
+
     def extract_features(self):
         """
         Extract features from the repository.
